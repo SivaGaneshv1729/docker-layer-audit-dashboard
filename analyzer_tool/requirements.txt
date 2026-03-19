@@ -1,0 +1,6 @@
+docker
+fastapi
+uvicorn
+typer
+pydantic
+python-multipart

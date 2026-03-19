@@ -1,0 +1,12 @@
+FROM node:18
+
+WORKDIR /usr/src/app
+
+# Bad practice: Copies all source code before installing dependencies.
+# Any change to any file will invalidate the npm install layer.
+COPY . .
+
+RUN npm install
+
+EXPOSE 3000
+CMD [ "node", "index.js" ]

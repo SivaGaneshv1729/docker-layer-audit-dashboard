@@ -1,0 +1,15 @@
+FROM golang:1.19
+
+WORKDIR /app
+
+# Bad practice: Copies everything, including potential secrets or temp files
+COPY . .
+
+# Installs dependencies
+RUN go mod init example/hello && go mod tidy
+
+# Builds the application
+RUN go build -o /app/main .
+
+EXPOSE 8080
+CMD ["/app/main"]

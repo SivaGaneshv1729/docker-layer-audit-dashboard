@@ -1,0 +1,24 @@
+# Stage 1: The 'builder' stage
+FROM golang:1.19 AS builder
+
+WORKDIR /app
+
+# Initialize module first to improve caching
+RUN go mod init example/hello
+
+COPY . .
+RUN go mod tidy
+
+# Build a static, CGO-disabled binary to ensure it runs on any base image
+RUN CGO_ENABLED=0 GOOS=linux go build -v -o /app/main .
+
+# Stage 2: The 'runtime' stage
+FROM gcr.io/distroless/static-debian11
+
+# Copy only the compiled binary from the 'builder' stage
+COPY --from=builder /app/main .
+
+EXPOSE 8080
+
+# The final command to run the application
+CMD ["/main"]

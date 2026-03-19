@@ -1,0 +1,27 @@
+# Stage 1: Build
+FROM python:3.11-slim AS builder
+WORKDIR /app
+
+# Install build dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends build-essential
+
+COPY requirements.txt .
+RUN pip install --user --no-cache-dir -r requirements.txt
+
+# Stage 2: Production (Alpine)
+# Note: Python Alpine images can be tricky with heavy C-dependent libraries like pandas/numpy
+# so we use -slim for stability or a well-configured Alpine with musl/glibc.
+FROM python:3.11-slim
+WORKDIR /app
+
+COPY --from=builder /root/.local /root/.local
+COPY . .
+
+ENV PATH=/root/.local/bin:$PATH
+
+# Security: Non-root user
+RUN useradd -m appuser
+USER appuser
+
+EXPOSE 5000
+CMD ["python", "app.py"]
