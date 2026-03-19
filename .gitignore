@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+dist/
+build/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# User-specific files
+.DS_Store
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Project specific
+analyzer_tool/__pycache__/
+dashboard/dist/
+dashboard/node_modules/
