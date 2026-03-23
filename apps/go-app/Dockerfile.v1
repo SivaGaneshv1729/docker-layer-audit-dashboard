@@ -5,8 +5,8 @@ WORKDIR /app
 # Bad practice: Copies everything, including potential secrets or temp files
 COPY . .
 
-# Installs dependencies
-RUN go mod init example/hello && go mod tidy
+# Installs dependencies after copying the whole project, which hurts caching
+RUN go mod tidy
 
 # Builds the application
 RUN go build -o /app/main .

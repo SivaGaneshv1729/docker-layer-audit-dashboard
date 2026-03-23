@@ -3,8 +3,9 @@ FROM golang:1.19 AS builder
 
 WORKDIR /app
 
-# Initialize module first to improve caching
-RUN go mod init example/hello
+# Copy dependency metadata first to improve caching
+COPY go.mod ./
+RUN go mod download
 
 COPY . .
 RUN go mod tidy

@@ -12,5 +12,11 @@ RUN apt-get update && \
 
 COPY app.py .
 
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+RUN useradd -m appuser
+USER appuser
+
 EXPOSE 5000
 CMD ["python", "app.py"]

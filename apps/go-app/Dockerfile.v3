@@ -2,11 +2,12 @@
 FROM golang:1.19-alpine AS builder
 WORKDIR /app
 
-# Good practice: Initialize and download dependencies first
-COPY go.mod* go.sum* ./
-RUN if [ -f go.mod ]; then go mod download; else go mod init example/hello; fi
+# Good practice: copy dependency metadata first for better cache reuse
+COPY go.mod ./
+RUN go mod download
 
 COPY . .
+RUN go mod tidy
 RUN CGO_ENABLED=0 GOOS=linux go build -v -o /app/main .
 
 # Stage 2: Production (Distroless for maximum reduction)
