@@ -1,5 +1,5 @@
 # Stage 1: Build
-FROM python:3.11 AS builder
+FROM python:3.11-bookworm AS builder
 WORKDIR /app
 
 # Efficient caching: Copy requirements first
@@ -9,7 +9,7 @@ RUN pip install --user --no-cache-dir -r requirements.txt
 COPY . .
 
 # Stage 2: Production
-FROM python:3.11-slim
+FROM python:3.11-slim-bookworm
 WORKDIR /app
 
 # Copy only the installed packages from builder

@@ -1,5 +1,5 @@
 # Stage 1: Build
-FROM python:3.11-slim AS builder
+FROM python:3.11-slim-bookworm AS builder
 WORKDIR /app
 
 # Build wheels once so the runtime image only installs ready-made artifacts
@@ -9,7 +9,7 @@ COPY requirements.txt .
 RUN pip wheel --no-cache-dir --wheel-dir /tmp/wheels -r requirements.txt
 
 # Stage 2: Production
-FROM python:3.11-slim
+FROM python:3.11-slim-bookworm
 WORKDIR /app
 
 COPY requirements.txt .
